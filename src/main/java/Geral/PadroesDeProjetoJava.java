@@ -5,25 +5,25 @@ import java.util.List;
 
 /**
  * =============================================================================
- *  PADRÕES DE PROJETO EM JAVA — GoF
- *  Prof. Kesede R. Julio | Exemplos Completos e Comentados
+ * PADRÕES DE PROJETO EM JAVA — GoF
+ * Prof. Kesede R. Julio | Exemplos Completos e Comentados
  * =============================================================================
  *
  * Este arquivo reúne todos os exemplos dos padrões cobertos no curso:
  *
- *  CRIACIONAIS:
- *   1. Factory Method     — Criação delegada a subclasses
- *   2. Abstract Factory   — Famílias de objetos compatíveis
- *   3. Builder            — Construção passo a passo
- *   4. Prototype          — Clonagem de objetos existentes
- *   5. Singleton          — Instância única (4 versões)
+ * CRIACIONAIS:
+ * 1. Factory Method — Criação delegada a subclasses
+ * 2. Abstract Factory — Famílias de objetos compatíveis
+ * 3. Builder — Construção passo a passo
+ * 4. Prototype — Clonagem de objetos existentes
+ * 5. Singleton — Instância única (4 versões)
  *
- *  ESTRUTURAIS:
- *   6. Adapter            — Adaptar interfaces incompatíveis
- *   7. Bridge             — Separar abstração de implementação
- *   8. Decorator          — Adicionar comportamentos dinamicamente
- *   9. Composite          — Estruturas hierárquicas uniformes
- *  10. Facade             — Interface simplificada para subsistemas
+ * ESTRUTURAIS:
+ * 6. Adapter — Adaptar interfaces incompatíveis
+ * 7. Bridge — Separar abstração de implementação
+ * 8. Decorator — Adicionar comportamentos dinamicamente
+ * 9. Composite — Estruturas hierárquicas uniformes
+ * 10. Facade — Interface simplificada para subsistemas
  *
  * =============================================================================
  */
@@ -70,12 +70,12 @@ public class PadroesDeProjetoJava {
     // Em vez de usar "new" diretamente, o cliente chama um método fábrica.
     //
     // ESTRUTURA:
-    //   Transporte (Product/Interface)
-    //      ├── Caminhao (ConcreteProduct)
-    //      └── Navio    (ConcreteProduct)
-    //   TransporteFactory (Creator abstrato)
-    //      ├── CaminhaoFactory (ConcreteCreator)
-    //      └── NavioFactory    (ConcreteCreator)
+    // Transporte (Product/Interface)
+    // ├── Caminhao (ConcreteProduct)
+    // └── Navio (ConcreteProduct)
+    // TransporteFactory (Creator abstrato)
+    // ├── CaminhaoFactory (ConcreteCreator)
+    // └── NavioFactory (ConcreteCreator)
     // =========================================================================
 
     /** Product: interface comum para todos os produtos criados */
@@ -135,7 +135,6 @@ public class PadroesDeProjetoJava {
         // sem modificar o código existente (princípio Open/Closed)
     }
 
-
     // =========================================================================
     // 2. ABSTRACT FACTORY
     // =========================================================================
@@ -144,16 +143,16 @@ public class PadroesDeProjetoJava {
     // Cada fábrica concreta produz um conjunto coeso de produtos.
     //
     // DIFERENÇA DO FACTORY METHOD:
-    //   Factory Method → cria 1 tipo de produto
-    //   Abstract Factory → cria N tipos de produtos compatíveis entre si
+    // Factory Method → cria 1 tipo de produto
+    // Abstract Factory → cria N tipos de produtos compatíveis entre si
     //
     // ESTRUTURA:
-    //   Veiculo (AbstractProduct A)         Pacote (AbstractProduct B)
-    //     ├── Caminhao / Moto / Navio          ├── CaixaPequena
-    //     └── Balsa                            └── CaixaGrande
-    //   TransporteAbstractFactory (Abstract Factory)
-    //     ├── TerrestreFactory
-    //     └── MaritimoFactory
+    // Veiculo (AbstractProduct A) Pacote (AbstractProduct B)
+    // ├── Caminhao / Moto / Navio ├── CaixaPequena
+    // └── Balsa └── CaixaGrande
+    // TransporteAbstractFactory (Abstract Factory)
+    // ├── TerrestreFactory
+    // └── MaritimoFactory
     // =========================================================================
 
     /** Abstract Product A */
@@ -168,93 +167,144 @@ public class PadroesDeProjetoJava {
 
     // Concrete Products — Terrestre
     static class CaminhaoV implements Veiculo {
-        public void entregar() { System.out.println("Entrega por caminhão."); }
+        @Override
+        public void entregar() {
+            System.out.println("Entrega por caminhão.");
+        }
     }
+
     static class Moto implements Veiculo {
-        public void entregar() { System.out.println("Entrega por moto."); }
+        @Override
+        public void entregar() {
+            System.out.println("Entrega por moto.");
+        }
     }
+
     static class CaixaPequena implements Pacote {
-        public void embalar() { System.out.println("Pacote pequeno embalado."); }
+        @Override
+        public void embalar() {
+            System.out.println("Pacote pequeno embalado.");
+        }
     }
 
     // Concrete Products — Marítimo
     static class NavioV implements Veiculo {
-        public void entregar() { System.out.println("Entrega por navio."); }
+        @Override
+        public void entregar() {
+            System.out.println("Entrega por navio.");
+        }
     }
+
     static class Balsa implements Veiculo {
-        public void entregar() { System.out.println("Entrega por balsa."); }
+        @Override
+        public void entregar() {
+            System.out.println("Entrega por balsa.");
+        }
     }
+
     static class CaixaGrande implements Pacote {
-        public void embalar() { System.out.println("Pacote grande embalado."); }
+        @Override
+        public void embalar() {
+            System.out.println("Pacote grande embalado.");
+        }
     }
 
     /** Abstract Factory: declara os métodos de criação para cada produto */
     interface TransporteAbstractFactory {
         Veiculo criarVeiculo();
-        Pacote  criarPacote();
+
+        Pacote criarPacote();
     }
 
     /** Concrete Factory 1: cria produtos terrestres (compatíveis entre si) */
     static class TransporteTerrestreFactory implements TransporteAbstractFactory {
-        public Veiculo criarVeiculo() { return new CaminhaoV(); }
-        public Pacote  criarPacote()  { return new CaixaPequena(); }
+        @Override
+        public Veiculo criarVeiculo() {
+            return new CaminhaoV();
+        }
+
+        @Override
+        public Pacote criarPacote() {
+            return new CaixaPequena();
+        }
     }
 
     /** Concrete Factory 2: cria produtos marítimos via navio */
     static class TransporteMaritimoFactory implements TransporteAbstractFactory {
-        public Veiculo criarVeiculo() { return new NavioV(); }
-        public Pacote  criarPacote()  { return new CaixaGrande(); }
+        @Override
+        public Veiculo criarVeiculo() {
+            return new NavioV();
+        }
+
+        @Override
+        public Pacote criarPacote() {
+            return new CaixaGrande();
+        }
     }
 
     /** Concrete Factory 3: entrega terrestre rápida por moto */
     static class TransporteMotoFactory implements TransporteAbstractFactory {
-        public Veiculo criarVeiculo() { return new Moto(); }
-        public Pacote  criarPacote()  { return new CaixaPequena(); }
+        @Override
+        public Veiculo criarVeiculo() {
+            return new Moto();
+        }
+
+        @Override
+        public Pacote criarPacote() {
+            return new CaixaPequena();
+        }
     }
 
     /** Concrete Factory 4: travessia marítima alternativa por balsa */
     static class TransporteBalsaFactory implements TransporteAbstractFactory {
-        public Veiculo criarVeiculo() { return new Balsa(); }
-        public Pacote  criarPacote()  { return new CaixaGrande(); }
+        @Override
+        public Veiculo criarVeiculo() {
+            return new Balsa();
+        }
+
+        @Override
+        public Pacote criarPacote() {
+            return new CaixaGrande();
+        }
     }
 
     static void testarAbstractFactory() {
         // Transporte Terrestre — caminhão com caixa pequena
         TransporteAbstractFactory terrestreFactory = new TransporteTerrestreFactory();
         Veiculo vT = terrestreFactory.criarVeiculo();
-        Pacote  pT = terrestreFactory.criarPacote();
+        Pacote pT = terrestreFactory.criarPacote();
         vT.entregar(); // Entrega por caminhão.
-        pT.embalar();  // Pacote pequeno embalado.
+        pT.embalar(); // Pacote pequeno embalado.
 
         // Transporte Marítimo — navio com caixa grande
         TransporteAbstractFactory maritimoFactory = new TransporteMaritimoFactory();
         Veiculo vM = maritimoFactory.criarVeiculo();
-        Pacote  pM = maritimoFactory.criarPacote();
+        Pacote pM = maritimoFactory.criarPacote();
         vM.entregar(); // Entrega por navio.
-        pM.embalar();  // Pacote grande embalado.
+        pM.embalar(); // Pacote grande embalado.
 
         // Terrestre Rápido — moto com caixa pequena
         TransporteAbstractFactory motoFactory = new TransporteMotoFactory();
         Veiculo vMoto = motoFactory.criarVeiculo();
-        Pacote  pMoto = motoFactory.criarPacote();
+        Pacote pMoto = motoFactory.criarPacote();
         vMoto.entregar(); // Entrega por moto.
-        pMoto.embalar();  // Pacote pequeno embalado.
+        pMoto.embalar(); // Pacote pequeno embalado.
 
         // Marítimo Alternativo — balsa com caixa grande
         TransporteAbstractFactory balsaFactory = new TransporteBalsaFactory();
         Veiculo vB = balsaFactory.criarVeiculo();
-        Pacote  pB = balsaFactory.criarPacote();
+        Pacote pB = balsaFactory.criarPacote();
         vB.entregar(); // Entrega por balsa.
-        pB.embalar();  // Pacote grande embalado.
+        pB.embalar(); // Pacote grande embalado.
     }
-
 
     // =========================================================================
     // 3. BUILDER
     // =========================================================================
     //
     // CONCEITO: Separa a construção de objetos complexos da sua representação.
-    // Permite criar o objeto passo a passo usando uma API fluente (method chaining).
+    // Permite criar o objeto passo a passo usando uma API fluente (method
+    // chaining).
     //
     // VANTAGEM: Evita construtores telescópicos (com dezenas de parâmetros).
     // Ex: new Pedido("João", "Notebook", 2, "Crédito", "Expressa") — confuso!
@@ -267,27 +317,28 @@ public class PadroesDeProjetoJava {
         // Atributos privados — acessíveis apenas pelo builder interno
         private String cliente;
         private String item;
-        private int    quantidade;
+        private int quantidade;
         private String pagamento;
         private String entrega;
 
         // Construtor privado: impede instanciação direta, força uso do Builder
-        private Pedido() {}
+        private Pedido() {
+        }
 
         @Override
         public String toString() {
             return "Pedido{" +
-                "cliente='" + cliente + '\'' +
-                ", item='" + item + '\'' +
-                ", quantidade=" + quantidade +
-                ", pagamento='" + pagamento + '\'' +
-                ", entrega='" + entrega + '\'' +
-                '}';
+                    "cliente='" + cliente + '\'' +
+                    ", item='" + item + '\'' +
+                    ", quantidade=" + quantidade +
+                    ", pagamento='" + pagamento + '\'' +
+                    ", entrega='" + entrega + '\'' +
+                    '}';
         }
 
         /** Builder como classe interna estática */
         public static class PedidoBuilder {
-            private Pedido pedido;
+            private final Pedido pedido;
 
             public PedidoBuilder() {
                 this.pedido = new Pedido(); // cria o objeto vazio
@@ -298,18 +349,22 @@ public class PadroesDeProjetoJava {
                 pedido.cliente = cliente;
                 return this;
             }
+
             public PedidoBuilder setItem(String item) {
                 pedido.item = item;
                 return this;
             }
+
             public PedidoBuilder setQuantidade(int quantidade) {
                 pedido.quantidade = quantidade;
                 return this;
             }
+
             public PedidoBuilder setPagamento(String pagamento) {
                 pedido.pagamento = pagamento;
                 return this;
             }
+
             public PedidoBuilder setEntrega(String entrega) {
                 pedido.entrega = entrega;
                 return this;
@@ -325,26 +380,25 @@ public class PadroesDeProjetoJava {
     static void testarBuilder() {
         // API Fluente: cada método retorna o próprio builder (method chaining)
         Pedido pedido = new Pedido.PedidoBuilder()
-            .setCliente("João Silva")
-            .setItem("Notebook")
-            .setQuantidade(2)
-            .setPagamento("Cartão de Crédito")
-            .setEntrega("Entrega Expressa")
-            .build();
+                .setCliente("João Silva")
+                .setItem("Notebook")
+                .setQuantidade(2)
+                .setPagamento("Cartão de Crédito")
+                .setEntrega("Entrega Expressa")
+                .build();
 
         System.out.println(pedido);
         // Pedido{cliente='João Silva', item='Notebook', quantidade=2, ...}
 
         // Podemos criar variações facilmente, sem afetar o original
         Pedido pedidoSimples = new Pedido.PedidoBuilder()
-            .setCliente("Maria")
-            .setItem("Mouse")
-            .setQuantidade(1)
-            .build(); // pagamento e entrega ficam null — OK para pedidos simples
+                .setCliente("Maria")
+                .setItem("Mouse")
+                .setQuantidade(1)
+                .build(); // pagamento e entrega ficam null — OK para pedidos simples
 
         System.out.println(pedidoSimples);
     }
-
 
     // =========================================================================
     // 4. PROTOTYPE
@@ -356,23 +410,24 @@ public class PadroesDeProjetoJava {
     // Java já provê suporte nativo via interface Cloneable e super.clone().
     //
     // ⚠️ ATENÇÃO — Cópia Rasa (Shallow) vs Cópia Profunda (Deep):
-    //   super.clone() faz cópia RASA: copia primitivos e referências, mas
-    //   NÃO duplica objetos internos. Se Contrato tivesse um campo
-    //   List<String> itens, o clone compartilharia a mesma lista!
-    //   Para deep copy: clone manual dos campos que são objetos.
+    // super.clone() faz cópia RASA: copia primitivos e referências, mas
+    // NÃO duplica objetos internos. Se Contrato tivesse um campo
+    // List<String> itens, o clone compartilharia a mesma lista!
+    // Para deep copy: clone manual dos campos que são objetos.
     // =========================================================================
 
     interface Documento extends Cloneable {
         Documento clonar();
+
         void exibirInfo();
     }
 
     static class Contrato implements Documento {
-        private String tipo;
+        private final String tipo;
         private String cliente;
 
         public Contrato(String cliente) {
-            this.tipo    = "Contrato Padrão";
+            this.tipo = "Contrato Padrão";
             this.cliente = cliente;
         }
 
@@ -405,10 +460,9 @@ public class PadroesDeProjetoJava {
         Contrato contratoClone = (Contrato) contratoBase.clonar();
         contratoClone.setCliente("Empresa ABC");
 
-        contratoBase.exibirInfo();  // ainda: Empresa XYZ (não foi alterado)
+        contratoBase.exibirInfo(); // ainda: Empresa XYZ (não foi alterado)
         contratoClone.exibirInfo(); // Empresa ABC (clone modificado)
     }
-
 
     // =========================================================================
     // 5. SINGLETON
@@ -418,17 +472,18 @@ public class PadroesDeProjetoJava {
     // acesso global a ela.
     //
     // VERSÕES:
-    //   V1 — Lazy (simples, mas não thread-safe)
-    //   V2 — Thread-safe com synchronized (correto, mas pode ser lento)
-    //   V3 — Eager (criado na inicialização, thread-safe, mas sempre alocado)
-    //   V4 — Enum (MELHOR opção: thread-safe, serialization-safe, reflex-safe)
+    // V1 — Lazy (simples, mas não thread-safe)
+    // V2 — Thread-safe com synchronized (correto, mas pode ser lento)
+    // V3 — Eager (criado na inicialização, thread-safe, mas sempre alocado)
+    // V4 — Enum (MELHOR opção: thread-safe, serialization-safe, reflex-safe)
     // =========================================================================
 
     // --- Versão 1: Lazy (Preguiçosa) — NÃO use em multi-thread! ---
     static class SingletonLazy {
         private static SingletonLazy instancia; // null até ser pedida
 
-        private SingletonLazy() {} // construtor privado
+        private SingletonLazy() {
+        } // construtor privado
 
         public static SingletonLazy getInstancia() {
             if (instancia == null) {
@@ -447,7 +502,8 @@ public class PadroesDeProjetoJava {
     static class SingletonThreadSafe {
         private static SingletonThreadSafe instancia;
 
-        private SingletonThreadSafe() {}
+        private SingletonThreadSafe() {
+        }
 
         // "synchronized" garante que só uma thread por vez acessa este método
         public static synchronized SingletonThreadSafe getInstancia() {
@@ -463,7 +519,8 @@ public class PadroesDeProjetoJava {
         // A instância é criada quando a classe é carregada (antes de qualquer uso)
         private static final SingletonEager instancia = new SingletonEager();
 
-        private SingletonEager() {}
+        private SingletonEager() {
+        }
 
         public static SingletonEager getInstancia() {
             return instancia; // sem verificações — já existe
@@ -509,7 +566,6 @@ public class PadroesDeProjetoJava {
         GerenciadorConfiguracao.INSTANCIA.exibirConfig(); // reflete a mudança
     }
 
-
     // =========================================================================
     // 6. ADAPTER
     // =========================================================================
@@ -518,9 +574,9 @@ public class PadroesDeProjetoJava {
     // Age como um "tradutor" entre dois sistemas.
     //
     // TIPOS:
-    //   Adapter de Objeto (recomendado): usa composição — tem uma referência
-    //     ao Adaptee e converte as chamadas para o formato dele.
-    //   Adapter de Classe: usa herança múltipla (não disponível em Java).
+    // Adapter de Objeto (recomendado): usa composição — tem uma referência
+    // ao Adaptee e converte as chamadas para o formato dele.
+    // Adapter de Classe: usa herança múltipla (não disponível em Java).
     //
     // CASO REAL: Adaptadores de tomada, wrappers de API legada, JDBC drivers.
     // =========================================================================
@@ -539,7 +595,7 @@ public class PadroesDeProjetoJava {
 
     /** Adapter: implementa Target e usa composição para chamar o Adaptee */
     static class AdapterTomada implements TomadaEuropeia {
-        private TomadaBrasileira tomadaBrasileira; // composição
+        private final TomadaBrasileira tomadaBrasileira; // composição
 
         public AdapterTomada(TomadaBrasileira tomadaBrasileira) {
             this.tomadaBrasileira = tomadaBrasileira;
@@ -560,7 +616,6 @@ public class PadroesDeProjetoJava {
         adaptador.conectar(); // Plug conectado na tomada brasileira!
     }
 
-
     // =========================================================================
     // 7. BRIDGE
     // =========================================================================
@@ -569,16 +624,16 @@ public class PadroesDeProjetoJava {
     // possam variar de forma independente.
     //
     // PROBLEMA SEM BRIDGE:
-    //   Tipo de notificação (Pedido, Suporte) × Forma de envio (Email, SMS)
-    //   = PedidoEmail, PedidoSMS, SuporteEmail, SuporteSMS — explosão de classes!
+    // Tipo de notificação (Pedido, Suporte) × Forma de envio (Email, SMS)
+    // = PedidoEmail, PedidoSMS, SuporteEmail, SuporteSMS — explosão de classes!
     //
     // COM BRIDGE:
-    //   Abstração (Notificacao) tem uma referência para o Implementor (Mensagem)
-    //   → Podemos combinar qualquer tipo com qualquer forma de envio
+    // Abstração (Notificacao) tem uma referência para o Implementor (Mensagem)
+    // → Podemos combinar qualquer tipo com qualquer forma de envio
     //
     // DIFERENÇA DO ADAPTER:
-    //   Adapter: torna incompatíveis compatíveis (resolve problema existente)
-    //   Bridge:  projeta a separação desde o início (evita problema futuro)
+    // Adapter: torna incompatíveis compatíveis (resolve problema existente)
+    // Bridge: projeta a separação desde o início (evita problema futuro)
     // =========================================================================
 
     /** Implementor: interface de baixo nível para envio */
@@ -616,7 +671,9 @@ public class PadroesDeProjetoJava {
 
     /** Refined Abstraction 1 */
     static class NotificacaoPedido extends Notificacao {
-        public NotificacaoPedido(Mensagem mensagem) { super(mensagem); }
+        public NotificacaoPedido(Mensagem mensagem) {
+            super(mensagem);
+        }
 
         @Override
         public void enviarNotificacao(String texto) {
@@ -626,7 +683,9 @@ public class PadroesDeProjetoJava {
 
     /** Refined Abstraction 2 */
     static class NotificacaoSuporte extends Notificacao {
-        public NotificacaoSuporte(Mensagem mensagem) { super(mensagem); }
+        public NotificacaoSuporte(Mensagem mensagem) {
+            super(mensagem);
+        }
 
         @Override
         public void enviarNotificacao(String texto) {
@@ -648,7 +707,6 @@ public class PadroesDeProjetoJava {
         n3.enviarNotificacao("Pedido cancelado.");
     }
 
-
     // =========================================================================
     // 8. DECORATOR
     // =========================================================================
@@ -660,28 +718,33 @@ public class PadroesDeProjetoJava {
     // adicionar comportamento antes e/ou depois da chamada do método original.
     //
     // EXEMPLO NA JDK:
-    //   new BufferedReader(new InputStreamReader(new FileInputStream("f.txt")))
-    //   → InputStreamReader decora FileInputStream (converte bytes → chars)
-    //   → BufferedReader decora InputStreamReader (adiciona buffer)
+    // new BufferedReader(new InputStreamReader(new FileInputStream("f.txt")))
+    // → InputStreamReader decora FileInputStream (converte bytes → chars)
+    // → BufferedReader decora InputStreamReader (adiciona buffer)
     //
     // DIFERENÇA DO COMPOSITE:
-    //   Composite: um objeto contém VÁRIOS filhos (estrutura de árvore)
-    //   Decorator: um objeto envolve UM outro objeto (estrutura linear/pilha)
+    // Composite: um objeto contém VÁRIOS filhos (estrutura de árvore)
+    // Decorator: um objeto envolve UM outro objeto (estrutura linear/pilha)
     // =========================================================================
 
     /** Component: interface base */
     interface Cafe {
         String getDescricao();
+
         double getCusto();
     }
 
     /** Concrete Component: implementação base */
     static class CafeSimples implements Cafe {
         @Override
-        public String getDescricao() { return "Café Simples"; }
+        public String getDescricao() {
+            return "Café Simples";
+        }
 
         @Override
-        public double getCusto() { return 5.0; }
+        public double getCusto() {
+            return 5.0;
+        }
     }
 
     /** Decorator base: implementa Cafe E contém uma referência a outro Cafe */
@@ -694,15 +757,21 @@ public class PadroesDeProjetoJava {
 
         // Por padrão, delega ao objeto decorado
         @Override
-        public String getDescricao() { return cafeDecorado.getDescricao(); }
+        public String getDescricao() {
+            return cafeDecorado.getDescricao();
+        }
 
         @Override
-        public double getCusto()     { return cafeDecorado.getCusto(); }
+        public double getCusto() {
+            return cafeDecorado.getCusto();
+        }
     }
 
     /** Concrete Decorator 1: adiciona leite */
     static class Leite extends CafeDecorator {
-        public Leite(Cafe c) { super(c); }
+        public Leite(Cafe c) {
+            super(c);
+        }
 
         @Override
         public String getDescricao() {
@@ -717,7 +786,9 @@ public class PadroesDeProjetoJava {
 
     /** Concrete Decorator 2: adiciona chocolate */
     static class Chocolate extends CafeDecorator {
-        public Chocolate(Cafe c) { super(c); }
+        public Chocolate(Cafe c) {
+            super(c);
+        }
 
         @Override
         public String getDescricao() {
@@ -748,7 +819,6 @@ public class PadroesDeProjetoJava {
         System.out.println(meuCafe.getDescricao() + " - R$" + meuCafe.getCusto());
     }
 
-
     // =========================================================================
     // 9. COMPOSITE
     // =========================================================================
@@ -757,12 +827,12 @@ public class PadroesDeProjetoJava {
     // uniforme. Define uma estrutura de árvore de objetos.
     //
     // ANALOGIA:
-    //   Um arquivo e uma pasta são tratados da mesma forma (exibir()).
-    //   Uma pasta pode conter arquivos E outras pastas (recursividade).
+    // Um arquivo e uma pasta são tratados da mesma forma (exibir()).
+    // Uma pasta pode conter arquivos E outras pastas (recursividade).
     //
     // DIFERENÇA DO DECORATOR:
-    //   Composite: estrutura de ÁRVORE (1 pai, N filhos)
-    //   Decorator: estrutura LINEAR (cada objeto envolve exatamente 1 outro)
+    // Composite: estrutura de ÁRVORE (1 pai, N filhos)
+    // Decorator: estrutura LINEAR (cada objeto envolve exatamente 1 outro)
     // =========================================================================
 
     /** Component: interface comum para Arquivo e Pasta */
@@ -772,9 +842,11 @@ public class PadroesDeProjetoJava {
 
     /** Leaf: objeto folha — não contém filhos */
     static class Arquivo implements ArquivoComponent {
-        private String nome;
+        private final String nome;
 
-        public Arquivo(String nome) { this.nome = nome; }
+        public Arquivo(String nome) {
+            this.nome = nome;
+        }
 
         @Override
         public void exibir(String indent) {
@@ -784,13 +856,20 @@ public class PadroesDeProjetoJava {
 
     /** Composite: pode conter Leaf e outros Composite */
     static class Pasta implements ArquivoComponent {
-        private String nome;
-        private List<ArquivoComponent> conteudo = new ArrayList<>();
+        private final String nome;
+        private final List<ArquivoComponent> conteudo = new ArrayList<>();
 
-        public Pasta(String nome) { this.nome = nome; }
+        public Pasta(String nome) {
+            this.nome = nome;
+        }
 
-        public void adicionar(ArquivoComponent c) { conteudo.add(c); }
-        public void remover(ArquivoComponent c)   { conteudo.remove(c); }
+        public void adicionar(ArquivoComponent c) {
+            conteudo.add(c);
+        }
+
+        public void remover(ArquivoComponent c) {
+            conteudo.remove(c);
+        }
 
         @Override
         public void exibir(String indent) {
@@ -823,12 +902,11 @@ public class PadroesDeProjetoJava {
         // Uma única chamada exibir() navega toda a hierarquia recursivamente
         pastaRaiz.exibir("");
         // [Pasta: Meus Arquivos]
-        //   Arquivo: documento.txt
-        //   Arquivo: foto.jpg
-        //   [Pasta: Trabalho]
-        //     Arquivo: planilha.xlsx
+        // Arquivo: documento.txt
+        // Arquivo: foto.jpg
+        // [Pasta: Trabalho]
+        // Arquivo: planilha.xlsx
     }
-
 
     // =========================================================================
     // 10. FACADE
@@ -838,8 +916,8 @@ public class PadroesDeProjetoJava {
     // Esconde a complexidade interna e expõe apenas o necessário.
     //
     // DIFERENÇA DO ADAPTER:
-    //   Adapter: faz duas interfaces INCOMPATÍVEIS funcionarem juntas
-    //   Facade:  SIMPLIFICA o acesso a um sistema que já funciona, mas é complexo
+    // Adapter: faz duas interfaces INCOMPATÍVEIS funcionarem juntas
+    // Facade: SIMPLIFICA o acesso a um sistema que já funciona, mas é complexo
     //
     // EXEMPLO REAL: javax.mail (JavaMail) é uma Facade para o protocolo SMTP/IMAP
     // =========================================================================
@@ -850,6 +928,7 @@ public class PadroesDeProjetoJava {
         public void ligar() {
             System.out.println("Tela ligada.");
         }
+
         public void ajustarBrilho() {
             System.out.println("Brilho ajustado.");
         }
@@ -859,6 +938,7 @@ public class PadroesDeProjetoJava {
         public void ligar() {
             System.out.println("Som ligado.");
         }
+
         public void ajustarVolume() {
             System.out.println("Volume ajustado.");
         }
@@ -868,6 +948,7 @@ public class PadroesDeProjetoJava {
         public void carregarFilme(String filme) {
             System.out.println("Carregando filme: " + filme);
         }
+
         public void reproduzir() {
             System.out.println("Filme iniciado!");
         }
@@ -877,9 +958,9 @@ public class PadroesDeProjetoJava {
 
     static class HomeTheaterFacade {
         // Referências para todos os componentes do subsistema
-        private Tela   tela   = new Tela();
-        private Som    som    = new Som();
-        private Player player = new Player();
+        private final Tela tela = new Tela();
+        private final Som som = new Som();
+        private final Player player = new Player();
 
         /**
          * Método de alto nível que orquestra todo o subsistema.
